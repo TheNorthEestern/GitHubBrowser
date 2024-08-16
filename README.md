@@ -8,7 +8,7 @@
 
 ## Rate Limit
 
-You'll need to enter your own GitHub access token. This can be done by navigating to [line 135](https://github.com/TheNorthEestern/GitHubBrowser/blob/main/GHBrowser/Service/GitHubV3Service.swift#L135) of `GitHubV3Service` and filling f34af269b9f4e41e4dcfd0aa67246328195345b9our token.
+You'll need to enter your own GitHub access token. This can be done by navigating to [line 135](https://github.com/TheNorthEestern/GitHubBrowser/blob/main/GHBrowser/Service/GitHubV3Service.swift#L135) of `GitHubV3Service` and entering token.
 
 ```swift
 request.setValue(.bearerAuthorization(token: "<YOUR_TOKEN_HERE>"), field: .authorization)
