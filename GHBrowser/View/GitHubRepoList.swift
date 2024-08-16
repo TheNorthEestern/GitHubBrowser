@@ -16,16 +16,19 @@ struct GitHubRepoList: View {
               viewModel.viewRepoProfileAction(repo.htmlURL)
             }
             .font(.system(.headline))
+            .foregroundStyle(.black)
             Spacer()
             if repo.numberOfStars > 0 {
               HStack(alignment: .center) {
                 Text("\(Image(systemName:"star"))\(repo.numberOfStars)")
+                  .foregroundStyle(.black)
               }
             }
           }
 
           if !repo.description.isEmpty {
             Text("\(Image(systemName: "info.circle")) \(repo.description)")
+              .foregroundStyle(.black)
           }
 
           if !repo.programmingLanguage.isEmpty {
