@@ -6,18 +6,22 @@ class GithubUserListViewController: UIViewController {
   private var subscribers = Set<AnyCancellable>()
   weak var coordinator: GithubProfileCoordinator?
 
-  private let errorView: UIView = {
+  private let errorLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
-    label.text = "Error"
+    label.numberOfLines = 0
 
-    let errorStack = UIStackView(arrangedSubviews: [label])
+    return label
+  }()
+
+  private lazy var errorView: UIView = {
+    let errorStack = UIStackView(arrangedSubviews: [errorLabel])
     errorStack.alignment = .center
 
     NSLayoutConstraint.activate([
-      label.centerXAnchor.constraint(equalTo: errorStack.centerXAnchor),
-      label.centerYAnchor.constraint(equalTo: errorStack.centerYAnchor)
+      errorLabel.centerXAnchor.constraint(equalTo: errorStack.centerXAnchor),
+      errorLabel.centerYAnchor.constraint(equalTo: errorStack.centerYAnchor)
     ])
 
     return errorStack
@@ -84,14 +88,16 @@ class GithubUserListViewController: UIViewController {
     viewModel
       .$loadingState
       .receive(on: DispatchQueue.main)
-      .sink { [usersTableView, refreshControl, errorView] state in
+      .sink { [usersTableView, refreshControl, errorView, errorLabel] state in
         switch state {
         case .done:
           refreshControl.endRefreshing()
           usersTableView.backgroundView = nil
           usersTableView.reloadData()
-        case .failure:
+        case let .failure(error):
           refreshControl.endRefreshing()
+          let errorText = "\n\nPull down to refresh and try again.\n\nIf you continue to encounter errors, please ensure that you've entered your GitHub token per the instructions in the README."
+          errorLabel.text = error.localizedDescription + errorText
           usersTableView.backgroundView = errorView
         case .loading:
           refreshControl.beginRefreshing()
